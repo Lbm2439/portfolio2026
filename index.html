@@ -376,7 +376,7 @@ footer{position:relative;z-index:2;padding:2rem 3rem;border-top:1px solid var(--
 
 /* ─── MUSIC WIDGET ─── */
 #yt-hidden{position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;bottom:0;left:-9999px;z-index:-1}
-.music-widget{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:300;display:flex;align-items:stretch}
+.music-widget{position:fixed;left:0;bottom:3rem;z-index:300;display:flex;align-items:flex-end}
 .music-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;background:var(--coral);color:var(--bg);border:none;cursor:none;padding:.75rem .55rem;border-radius:0 10px 10px 0;transition:background .2s;flex-shrink:0}
 .music-tab:hover{background:var(--coral2)}
 .music-tab-icon{font-size:1.05rem;line-height:1}
@@ -413,7 +413,7 @@ html[data-palette="cream"] .music-np-song{color:rgba(26,21,20,.5)}
 .music-widget.playing .music-tab-icon{animation:musicPulse 1.2s ease-in-out infinite}
 @keyframes musicPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
 @media(max-width:880px){
-  .music-widget{position:fixed;top:auto!important;bottom:1.75rem;left:0;transform:none!important;align-items:flex-end}
+  .music-widget{bottom:1.75rem}
   .music-tab{padding:.6rem .5rem;border-radius:0 10px 10px 0;flex-shrink:0}
   .music-tab-text{display:none}
   .music-panel{position:absolute;left:100%;bottom:0;border-radius:0 16px 16px 0;border-left:none}
