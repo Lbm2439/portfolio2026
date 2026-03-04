@@ -864,7 +864,7 @@ const secs=document.querySelectorAll('section[id]');
 window.addEventListener('scroll',()=>{
   let cur='';secs.forEach(s=>{if(window.scrollY>=s.offsetTop-200)cur=s.id});
   document.querySelectorAll('.nav-a').forEach(a=>{
-    a.style.color=a.getAttribute('href')==='#'+cur?'var(--coral)':'rgba(245,240,232,.65)';
+    a.style.color=a.getAttribute('href')==='#'+cur?'var(--coral)':'';
   });
 });
 
