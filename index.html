@@ -372,7 +372,47 @@ footer{position:relative;z-index:2;padding:2rem 3rem;border-top:1px solid var(--
 
   /* ─── FOOTER ─── */
   footer{flex-direction:column;gap:.5rem;text-align:center;padding:2rem 1.5rem}
+  /* ─── MUSIC WIDGET mobile ─── */
+  .music-tab-text{display:none}
+  .music-tab{padding:.6rem .45rem}
 }
+
+/* ─── MUSIC WIDGET ─── */
+#yt-hidden{position:fixed;width:1px;height:1px;opacity:0;pointer-events:none;bottom:0;left:-9999px;z-index:-1}
+.music-widget{position:fixed;left:0;top:50%;transform:translateY(-50%);z-index:300;display:flex;align-items:stretch}
+.music-tab{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:.5rem;background:var(--coral);color:var(--bg);border:none;cursor:none;padding:.75rem .55rem;border-radius:0 10px 10px 0;transition:background .2s;flex-shrink:0}
+.music-tab:hover{background:var(--coral2)}
+.music-tab-icon{font-size:1.05rem;line-height:1}
+.music-tab-text{font-family:var(--fd);font-size:.55rem;letter-spacing:.14em;writing-mode:vertical-rl;transform:rotate(180deg);white-space:nowrap;line-height:1}
+.music-panel{background:var(--bg);border:1px solid var(--ghost);border-left:none;border-radius:0 16px 16px 0;width:0;overflow:hidden;transition:width .4s cubic-bezier(.16,1,.3,1)}
+.music-widget.open .music-panel{width:230px}
+.music-panel-inner{width:230px;padding:1.4rem;display:flex;flex-direction:column;gap:.9rem}
+.music-panel-header{display:flex;justify-content:space-between;align-items:center}
+.music-eyebrow{font-family:var(--fd);font-size:.85rem;letter-spacing:.14em;color:var(--coral)}
+.music-close{background:none;border:none;color:rgba(var(--text-rgb),.35);cursor:none;font-size:.75rem;padding:.2rem;line-height:1;transition:color .2s}
+.music-close:hover{color:var(--cream)}
+.music-genres{display:flex;flex-direction:column;gap:.55rem}
+.music-genre-btn{width:100%;background:var(--ghost);border:1px solid var(--ghost);border-radius:12px;padding:1.1rem 1.1rem;cursor:none;text-align:left;transition:all .25s;position:relative;overflow:hidden}
+.music-genre-btn::before{content:'';position:absolute;inset:0;background:var(--coral3);opacity:0;transition:opacity .25s}
+.music-genre-btn:hover::before{opacity:1}
+.music-genre-btn:hover .music-genre-label{color:var(--coral)}
+.music-genre-label{font-family:var(--fd);font-size:2rem;letter-spacing:.04em;color:var(--cream);position:relative;z-index:1;transition:color .25s;line-height:1;display:block}
+.music-genre-hint{font-family:var(--fb);font-size:.58rem;letter-spacing:.08em;color:rgba(var(--text-rgb),.35);position:relative;z-index:1;margin-top:.2rem;display:block}
+.music-now-playing{display:none;flex-direction:column;gap:.2rem}
+.music-now-playing.visible{display:flex}
+.music-np-genre{font-family:var(--fb);font-size:.58rem;letter-spacing:.2em;text-transform:uppercase;color:var(--coral)}
+.music-np-artist{font-family:var(--fd);font-size:1.45rem;letter-spacing:.04em;color:var(--cream);line-height:1;margin-top:.1rem}
+.music-np-song{font-family:var(--fi);font-style:italic;font-weight:300;font-size:.9rem;color:var(--dim);line-height:1.35;margin-bottom:.5rem}
+.music-play-btn{width:100%;background:var(--coral);border:none;border-radius:100px;color:var(--bg);font-family:var(--fd);font-size:.95rem;letter-spacing:.1em;padding:.55rem 1rem;cursor:none;transition:background .2s}
+.music-play-btn:hover{background:var(--coral2)}
+.music-back{background:none;border:none;font-family:var(--fb);font-size:.6rem;letter-spacing:.1em;text-transform:uppercase;color:rgba(var(--text-rgb),.35);cursor:none;padding:.2rem 0;margin-top:.15rem;transition:color .2s;text-align:left}
+.music-back:hover{color:var(--cream)}
+html[data-palette="cream"] .music-panel{background:#EBE9E1;border-color:rgba(26,21,20,.1)}
+html[data-palette="cream"] .music-genre-btn{background:rgba(26,21,20,.05);border-color:rgba(26,21,20,.08)}
+html[data-palette="cream"] .music-genre-label{color:var(--cream)}
+html[data-palette="cream"] .music-genre-hint{color:rgba(26,21,20,.35)}
+html[data-palette="cream"] .music-np-artist{color:var(--cream)}
+html[data-palette="cream"] .music-np-song{color:rgba(26,21,20,.5)}
 </style>
 </head>
 <body>
@@ -419,6 +459,44 @@ footer{position:relative;z-index:2;padding:2rem 3rem;border-top:1px solid var(--
     <a href="#contact" class="nav-pill">Hire Me</a>
   </div>
 </nav>
+
+<!-- ─── MUSIC WIDGET ─── -->
+<div id="yt-hidden"></div>
+<div class="music-widget" id="musicWidget">
+  <button class="music-tab" id="musicTab" aria-label="Open music player">
+    <span class="music-tab-icon">♪</span>
+    <span class="music-tab-text">LISTEN WHILE YOU BROWSE</span>
+  </button>
+  <div class="music-panel">
+    <div class="music-panel-inner">
+      <div class="music-panel-header">
+        <span class="music-eyebrow">♪ PICK A TRACK</span>
+        <button class="music-close" id="musicClose" aria-label="Close">✕</button>
+      </div>
+      <div class="music-genres" id="musicGenres">
+        <button class="music-genre-btn" data-vid="l9WKZpC9UbU" data-genre="EMO" data-artist="Story Of The Year" data-song="Until The Day I Die">
+          <span class="music-genre-label">EMO</span>
+          <span class="music-genre-hint">Story Of The Year</span>
+        </button>
+        <button class="music-genre-btn" data-vid="kSzr1koJDIw" data-genre="ROCK" data-artist="Poison" data-song="Nothin' But A Good Time">
+          <span class="music-genre-label">ROCK</span>
+          <span class="music-genre-hint">Poison</span>
+        </button>
+        <button class="music-genre-btn" data-vid="mcg4z1gGbEw" data-genre="RAP" data-artist="T.I." data-song="Let 'Em Know">
+          <span class="music-genre-label">RAP</span>
+          <span class="music-genre-hint">T.I.</span>
+        </button>
+      </div>
+      <div class="music-now-playing" id="musicNowPlaying">
+        <div class="music-np-genre" id="musicNpGenre"></div>
+        <div class="music-np-artist" id="musicNpArtist"></div>
+        <div class="music-np-song" id="musicNpSong"></div>
+        <button class="music-play-btn" id="musicPlayBtn">▶ PLAY</button>
+        <button class="music-back" id="musicBack">← change song</button>
+      </div>
+    </div>
+  </div>
+</div>
 
 <!-- HERO -->
 <section id="hero">
@@ -913,6 +991,73 @@ if(ctForm){
     }catch{btn.textContent='Send it →';btn.disabled=false;alert('Something went wrong — try emailing me directly.');}
   });
 }
+
+// ── MUSIC PLAYER
+(function(){
+  const widget=document.getElementById('musicWidget');
+  const tab=document.getElementById('musicTab');
+  const closeBtn=document.getElementById('musicClose');
+  const genresEl=document.getElementById('musicGenres');
+  const nowPlayingEl=document.getElementById('musicNowPlaying');
+  const playBtn=document.getElementById('musicPlayBtn');
+  const backBtn=document.getElementById('musicBack');
+  const npGenre=document.getElementById('musicNpGenre');
+  const npArtist=document.getElementById('musicNpArtist');
+  const npSong=document.getElementById('musicNpSong');
+  let ytPlayer=null,isPlaying=false,playerReady=false,currentVid=null;
+
+  // Load YouTube IFrame API
+  const tag=document.createElement('script');
+  tag.src='https://www.youtube.com/iframe_api';
+  document.head.appendChild(tag);
+
+  window.onYouTubeIframeAPIReady=function(){
+    ytPlayer=new YT.Player('yt-hidden',{
+      height:'1',width:'1',videoId:'',
+      playerVars:{autoplay:0,controls:0,disablekb:1,fs:0},
+      events:{
+        onReady:function(){playerReady=true},
+        onStateChange:function(e){
+          if(e.data===YT.PlayerState.ENDED){isPlaying=false;playBtn.textContent='▶ PLAY';}
+        }
+      }
+    });
+  };
+
+  tab.addEventListener('click',()=>widget.classList.toggle('open'));
+
+  closeBtn.addEventListener('click',()=>{
+    widget.classList.remove('open');
+    if(ytPlayer&&isPlaying){ytPlayer.pauseVideo();isPlaying=false;playBtn.textContent='▶ PLAY';}
+  });
+
+  document.querySelectorAll('.music-genre-btn').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      npGenre.textContent=btn.dataset.genre;
+      npArtist.textContent=btn.dataset.artist;
+      npSong.textContent=btn.dataset.song;
+      currentVid=btn.dataset.vid;
+      isPlaying=false;
+      playBtn.textContent='▶ PLAY';
+      genresEl.style.display='none';
+      nowPlayingEl.classList.add('visible');
+      if(playerReady){ytPlayer.cueVideoById({videoId:currentVid,startSeconds:0});}
+    });
+  });
+
+  playBtn.addEventListener('click',()=>{
+    if(!ytPlayer||!playerReady||!currentVid)return;
+    if(isPlaying){ytPlayer.pauseVideo();isPlaying=false;playBtn.textContent='▶ PLAY';}
+    else{ytPlayer.playVideo();isPlaying=true;playBtn.textContent='⏸ PAUSE';}
+  });
+
+  backBtn.addEventListener('click',()=>{
+    if(ytPlayer&&isPlaying){ytPlayer.pauseVideo();isPlaying=false;}
+    genresEl.style.display='';
+    nowPlayingEl.classList.remove('visible');
+    playBtn.textContent='▶ PLAY';
+  });
+})();
 </script>
 <!-- ─── CASE STUDY MODALS ─── -->
 
