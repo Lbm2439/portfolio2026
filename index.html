@@ -5,6 +5,36 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Lauren Thacker — Senior PM & UX Strategist</title>
 <meta name="description" content="Product leader with 10+ years shipping digital products. $5M+ revenue influenced. Available for new opportunities.">
+<meta name="author" content="Lauren Thacker">
+<meta name="robots" content="index, follow">
+<meta name="keywords" content="Product Manager, UX Strategist, UX Designer, Senior PM, Healthcare Tech, HIPAA, Design Systems, Fractional PM, Richmond VA, Lauren Thacker">
+<link rel="canonical" href="https://laurenthacker.com">
+<!-- JSON-LD Structured Data -->
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Person",
+  "name": "Lauren Thacker",
+  "jobTitle": "Senior Product Manager & UX Strategist",
+  "url": "https://laurenthacker.com",
+  "description": "Product leader with 10+ years shipping digital products. $5M+ revenue influenced. Available for new opportunities.",
+  "knowsAbout": ["Product Management", "UX Design", "UX Research", "Healthcare Technology", "HIPAA Compliance", "Design Systems", "Agile", "Figma", "React Native"],
+  "address": {
+    "@type": "PostalAddress",
+    "addressLocality": "Richmond",
+    "addressRegion": "VA",
+    "addressCountry": "US"
+  }
+}
+</script>
+<!-- Google Analytics -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-139KRTJVMM"></script>
+<script>
+  window.dataLayer=window.dataLayer||[];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js',new Date());
+  gtag('config','G-139KRTJVMM');
+</script>
 <!-- Open Graph / Social Sharing -->
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://laurenthacker.com">
@@ -1085,7 +1115,10 @@ if(ctForm){
     });
   };
 
-  tab.addEventListener('click',()=>widget.classList.toggle('open'));
+  tab.addEventListener('click',()=>{
+    widget.classList.toggle('open');
+    if(widget.classList.contains('open'))gtag('event','music_widget_open',{event_category:'Music Widget'});
+  });
 
   closeBtn.addEventListener('click',()=>{
     widget.classList.remove('open');
@@ -1103,13 +1136,16 @@ if(ctForm){
       genresEl.style.display='none';
       nowPlayingEl.classList.add('visible');
       if(playerReady){ytPlayer.cueVideoById({videoId:currentVid,startSeconds:0});}
+      gtag('event','music_genre_select',{event_category:'Music Widget',genre:btn.dataset.genre,artist:btn.dataset.artist});
     });
   });
 
   playBtn.addEventListener('click',()=>{
     if(!ytPlayer||!playerReady||!currentVid)return;
     if(isPlaying){ytPlayer.pauseVideo();isPlaying=false;playBtn.textContent='▶ PLAY';widget.classList.remove('playing');}
-    else{ytPlayer.playVideo();isPlaying=true;playBtn.textContent='⏸ PAUSE';widget.classList.add('playing');}
+    else{ytPlayer.playVideo();isPlaying=true;playBtn.textContent='⏸ PAUSE';widget.classList.add('playing');
+      gtag('event','music_play',{event_category:'Music Widget',genre:npGenre.textContent,artist:npArtist.textContent});
+    }
   });
 
   backBtn.addEventListener('click',()=>{
@@ -1139,7 +1175,13 @@ if(ctForm){
 
   function coral(){return getComputedStyle(document.documentElement).getPropertyValue('--coral').trim()||'#FF5533';}
 
-  tab.addEventListener('click',()=>{widget.classList.toggle('open');widget.classList.contains('open')?startGame():stopGame();});
+  let lastMilestone=0;
+
+  tab.addEventListener('click',()=>{
+    widget.classList.toggle('open');
+    if(widget.classList.contains('open')){startGame();gtag('event','snow_game_open',{event_category:'Snow Game'});}
+    else stopGame();
+  });
   closeBtn.addEventListener('click',()=>{widget.classList.remove('open');stopGame();});
 
   canvas.addEventListener('mousemove',e=>{
@@ -1148,13 +1190,15 @@ if(ctForm){
     if(gameOver&&bailTimer>30)startGame();
   });
 
-  function startGame(){score=0;speed=2.5;gameOver=false;bailTimer=0;obstacles=[];spawnTimer=0;yetiTimer=250;terrainOff=0;curX=W/2;active=true;if(raf)cancelAnimationFrame(raf);loop();}
+  function startGame(){score=0;speed=2.5;gameOver=false;bailTimer=0;obstacles=[];spawnTimer=0;yetiTimer=250;terrainOff=0;curX=W/2;active=true;lastMilestone=0;if(raf)cancelAnimationFrame(raf);loop();}
   function stopGame(){active=false;if(raf)cancelAnimationFrame(raf);}
   function loop(){if(!active)return;update();draw();raf=requestAnimationFrame(loop);}
 
   function update(){
     if(gameOver){bailTimer++;if(bailTimer>120)startGame();return;}
     terrainOff+=speed;score+=speed*0.04;speed=Math.min(6,2.5+score*0.015);
+    const milestone=Math.floor(score/50)*50;
+    if(milestone>0&&milestone>lastMilestone){lastMilestone=milestone;gtag('event','snow_score_milestone',{event_category:'Snow Game',distance_meters:milestone});}
     tracks.forEach(t=>{t.y-=t.spd*speed*0.45;if(t.y<-t.len){t.y=H+t.len;t.x=Math.random()*W;}});
     flakes.forEach(f=>{f.y-=f.spd*speed*0.35;f.x+=Math.sin(f.y*0.03)*0.4;if(f.y<0)f.y=H;});
     spawnTimer++;
@@ -1173,7 +1217,7 @@ if(ctForm){
     const bx=curX,by=H*0.62;
     for(const o of obstacles){
       const dx=o.x-bx,dy=o.y-by,hr=o.type==='tree'?o.w*0.65:o.type==='yeti'?o.w*1.1:o.w*0.9;
-      if(Math.sqrt(dx*dx+dy*dy)<11+hr){gameOver=true;bailTimer=0;break;}
+      if(Math.sqrt(dx*dx+dy*dy)<11+hr){gameOver=true;bailTimer=0;gtag('event','snow_game_crash',{event_category:'Snow Game',final_score:Math.floor(score),obstacle_type:o.type});break;}
     }
   }
 
