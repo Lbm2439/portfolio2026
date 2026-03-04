@@ -372,9 +372,6 @@ footer{position:relative;z-index:2;padding:2rem 3rem;border-top:1px solid var(--
 
   /* ─── FOOTER ─── */
   footer{flex-direction:column;gap:.5rem;text-align:center;padding:2rem 1.5rem}
-  /* ─── MUSIC WIDGET mobile ─── */
-  .music-tab-text{display:none}
-  .music-tab{padding:.6rem .45rem}
 }
 
 /* ─── MUSIC WIDGET ─── */
@@ -413,6 +410,13 @@ html[data-palette="cream"] .music-genre-label{color:var(--cream)}
 html[data-palette="cream"] .music-genre-hint{color:rgba(26,21,20,.35)}
 html[data-palette="cream"] .music-np-artist{color:var(--cream)}
 html[data-palette="cream"] .music-np-song{color:rgba(26,21,20,.5)}
+@media(max-width:880px){
+  .music-widget{position:fixed;top:auto!important;bottom:1.75rem;left:0;transform:none!important;align-items:flex-end}
+  .music-tab{padding:.6rem .5rem;border-radius:0 10px 10px 0;flex-shrink:0}
+  .music-tab-text{display:none}
+  .music-panel{position:absolute;left:100%;bottom:0;border-radius:0 16px 16px 0;border-left:none}
+  .music-widget.open .music-panel{width:calc(100vw - 46px)}
+}
 </style>
 </head>
 <body>
