@@ -1140,16 +1140,16 @@ if(ctForm){
 
   function update(){
     if(gameOver){bailTimer++;if(bailTimer>120)startGame();return;}
-    terrainOff+=speed;score+=speed*0.04;speed=Math.min(8,2.5+score*0.028);
+    terrainOff+=speed;score+=speed*0.04;speed=Math.min(6,2.5+score*0.015);
     tracks.forEach(t=>{t.y-=t.spd*speed*0.45;if(t.y<-t.len){t.y=H+t.len;t.x=Math.random()*W;}});
     flakes.forEach(f=>{f.y-=f.spd*speed*0.35;f.x+=Math.sin(f.y*0.03)*0.4;if(f.y<0)f.y=H;});
     spawnTimer++;
-    if(spawnTimer>=Math.max(25,72-score*0.9)){
+    if(spawnTimer>=Math.max(55,120-score*0.5)){
       spawnTimer=0;
       const isTree=Math.random()>0.38;
       obstacles.push({x:Math.random()*(W-50)+25,y:H+45,type:isTree?'tree':'rock',w:isTree?11+Math.random()*9:9+Math.random()*9,h:isTree?24+Math.random()*14:9+Math.random()*8});
     }
-    obstacles.forEach(o=>o.y-=speed*1.35);
+    obstacles.forEach(o=>o.y-=speed*0.7);
     obstacles=obstacles.filter(o=>o.y>-70);
     const bx=curX,by=H*0.62;
     for(const o of obstacles){
