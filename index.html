@@ -410,6 +410,8 @@ html[data-palette="cream"] .music-genre-label{color:var(--cream)}
 html[data-palette="cream"] .music-genre-hint{color:rgba(26,21,20,.35)}
 html[data-palette="cream"] .music-np-artist{color:var(--cream)}
 html[data-palette="cream"] .music-np-song{color:rgba(26,21,20,.5)}
+.music-widget.playing .music-tab-icon{animation:musicPulse 1.2s ease-in-out infinite}
+@keyframes musicPulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.3)}}
 @media(max-width:880px){
   .music-widget{position:fixed;top:auto!important;bottom:1.75rem;left:0;transform:none!important;align-items:flex-end}
   .music-tab{padding:.6rem .5rem;border-radius:0 10px 10px 0;flex-shrink:0}
@@ -1033,7 +1035,7 @@ if(ctForm){
 
   closeBtn.addEventListener('click',()=>{
     widget.classList.remove('open');
-    if(ytPlayer&&isPlaying){ytPlayer.pauseVideo();isPlaying=false;playBtn.textContent='▶ PLAY';}
+    // music keeps playing — don't pause on close
   });
 
   document.querySelectorAll('.music-genre-btn').forEach(btn=>{
@@ -1052,12 +1054,12 @@ if(ctForm){
 
   playBtn.addEventListener('click',()=>{
     if(!ytPlayer||!playerReady||!currentVid)return;
-    if(isPlaying){ytPlayer.pauseVideo();isPlaying=false;playBtn.textContent='▶ PLAY';}
-    else{ytPlayer.playVideo();isPlaying=true;playBtn.textContent='⏸ PAUSE';}
+    if(isPlaying){ytPlayer.pauseVideo();isPlaying=false;playBtn.textContent='▶ PLAY';widget.classList.remove('playing');}
+    else{ytPlayer.playVideo();isPlaying=true;playBtn.textContent='⏸ PAUSE';widget.classList.add('playing');}
   });
 
   backBtn.addEventListener('click',()=>{
-    if(ytPlayer&&isPlaying){ytPlayer.pauseVideo();isPlaying=false;}
+    if(ytPlayer&&isPlaying){ytPlayer.pauseVideo();isPlaying=false;widget.classList.remove('playing');}
     genresEl.style.display='';
     nowPlayingEl.classList.remove('visible');
     playBtn.textContent='▶ PLAY';
